@@ -1,0 +1,40 @@
+From 2dee28140aa5df61e4e16cbb19791912003db29d Mon Sep 17 00:00:00 2001
+From: Val Packett <val@packett.cool>
+Date: Tue, 18 Nov 2025 14:48:57 -0300
+Subject: [PATCH] drm/panel-edp: Add AUO B140QAX01.H panel
+
+A 14-inch 2560x1600 60Hz matte touch panel, found on a Dell Latitude 7455
+laptop (second-source with BOE NE14QDM), according to online sources it's
+also found on the Latitude 7440 and some ASUS models.
+
+Raw EDID dump:
+
+00 ff ff ff ff ff ff 00 06 af a4 0b 00 00 00 00
+00 20 01 04 a5 1e 13 78 03 ad f5 a8 54 47 9c 24
+0e 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01
+01 01 01 01 01 01 f0 68 00 a0 a0 40 2e 60 30 20
+35 00 2d bc 10 00 00 1a f3 53 00 a0 a0 40 2e 60
+30 20 35 00 2d bc 10 00 00 1a 00 00 00 fe 00 36
+39 52 31 57 80 42 31 34 30 51 41 58 00 00 00 00
+00 02 41 21 a8 00 01 00 00 1a 41 0a 20 20 00 a1
+
+Signed-off-by: Val Packett <val@packett.cool>
+---
+ drivers/gpu/drm/panel/panel-edp.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 944c7c70de55..247afe8eb32a 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1913,6 +1913,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0xb7a9, &delay_200_500_e50, "B140HAK03.3"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0xc4b4, &delay_200_500_e50, "B116XAT04.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0xc9a8, &delay_200_500_e50, "B140QAN08.H"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x0ba4, &delay_200_500_e50, "B140QAX01.H"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0xcdba, &delay_200_500_e50, "B140UAX01.2"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0xd497, &delay_200_500_e50, "B120XAN01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0xf390, &delay_200_500_e50, "B140XTN07.7"),
+-- 
+2.51.0
+

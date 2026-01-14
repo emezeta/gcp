@@ -1,0 +1,61 @@
+## Navegar la pesadilla.
+
+Si no sos un experimentado hacker del kernel Linux, puede que te haya sucedido. Encontrar un driver, una funcionalidad o mejora en un repositorio e intentar llevarlas a tu árbol Linux. Quizá te hayas sentido un poco desorientado en un océano de dependencias, divergencias tan abundantes como extrañas. Aquí entra la idea de contar con un ayudante que asista en estos tareas.
+
+
+## Padndora en el kernel Linux
+
+Digamos que "Pandora" es el patch inicial o patch cero. Pandora es eso que te gustaría probar en tu kernel. Se trata de una pieza de sofwtare que puede incluir código fuente, configuraciones, documentación, etc, que implementa una funcionalidad específica, provee soporte para determinado hardware, drivers, adaptaciones o mejoras. Esta característica será extraída en formato git format-patch (uno o varios patchs) del repositorio de Origen, "A", y casi siempre terminará siendo una caja de sorpresas, Pandora!. Al intentar `git apply  pandora.patch` en el repositorio Destino "B", es muy probable que se generen  divergencias, dependencias incumplidas, configuraciones insuficientes... dejando un panorama complejo para nuestra working copy. 
+
+
+## GCP - git commit patch
+
+"GCP" es una herramienta de asistencia en el proceso de "trasplante" de Pandora entre A y B. 
+A menos que se trate de una modificación sencilla, el primer intento de aplicación de Pandora en "B", es esperable que produzca fallos y el patch sea rechazado. Lo habitual es que existan fallas y mensajes de error.
+
+El campo de acción de GCP está en la búsqueda de los commits que compongan el contexto o estructuras que hacen posible funcionamiento de Pandora en el kernel de origen "A". Estos commits serán extraídos, analizados y eventualmente aplicados en el repositorio destino. Asistir en este proceso de "reconstrucción" del ecosistema de vida de Pandora por aproximaciones, esa es la razón de ser de GCP.
+
+Sí el patch aplica, gcp no tiene caso de uso. Fin de la historia. Si no es así, Pandora puede haber destapado su caja de sorpresas voluminosa y de raíces extendidas. Este será el momento para probar si gcp tiene sentido.
+
+Si Pandora no aplicó, los logs del intento fallido serán funde de pistas sobre dependencias incumplidas. Esa es la primera tareas de gcp. La aplicación exitosa de un Pandora, pueden abarcar varios ciclos de gcp antes de alcanzar el cierre completo.
+
+
+## La descripción.
+
+El funcionamiento básico es la aplicación de una secuencia de scripts bash, intercalando pausas de análisis que darán pautas para pasar a la siguiente etapa o volver a buscar dependencias en el origen.
+
+
+
+Una vez hecho el intento de aplicación de un patch o serie de patchs, un ciclo gcp consiste en:
+
+    1. Analizar errores y generar los insumos que abrirán un *"ciclo"* de búsqueda de commits en el origen, éstos deberán estar vinculados al código del patch cero.
+
+    2. Realizar la búsqueda en el repo origen de los commits involucrados y extraer dichos commits en formato git_format_patch. La salida en este paso será una serie de patchs, de largo variable entre 0 y n. Esta será la  "Serie n" o Sn. Si n>0, entonces n será igual al número de ciclos de búsqueda, extracción, aplicación contabilizados. Si n = 0, solo queda el escrutinio cuidadoso para intentar descifrar aquello que pueda no resultar tan obvio :)
+
+    3. Aplicar los patchs de la Sn en orden creciente de antigüedad. Primero el más antiguo hasta finalizar con el más reciente.
+
+    Notese que en teoría, ningún patch extraído de repositorio origen podrá ser posterior a la fecha de aplicación del ultimo commit que genero el estado actual del código contenido en Pandora. De igual forma, tampoco debería haber alguno cuya fecha fuera anterior al momento de la bifurcación que dio lugar a la creación del repo destino, dado que ambos son kernel linux deberán tener un ancestro común.
+
+    Sí luego de aplicar la Serie hubiera resultados positivos de uno o más patchs, entonces deberá volver a intentar la aplicación de Pandora. De nuevo, si aún no es posible instalar Pandora, entonces se podría dar lugar a una nueva ronda de ciclos.
+    
+    Es buena idea comparar los logs de la aplicación de Sn contra los anteriores, como reaseguro de repetición en eventuales series sucesivas.
+
+
+## Bash scripts:
+
+ - 01crea_lista_recursos.sh
+    Analiza los logs del intento de aplicación fallida. Creando una lista de recursos, insumos útiles, para la búsqueda de referencias en el repositorio de origen.
+
+ - 02.03buscar_hashs_extraer_patchs.sh   # Fusion 02bauscar_hashs y 03extraer_patchs.
+    Con las *claves* de la lista de recursos, se buscan 'commit menssag' que matcheen con claves y se extraen patchs vinculados. Se presenva una lista de  los hashes, para evitar repeticiones.
+    
+    Aquí se sugiere verificar la serie de patchs extraídos procurando detectar  falsos positivos. Esto evitará que se abran líneas de búsqueda en direcciones o zonas de código irrelevantes.
+
+ - 04aplica_patchs.sh
+    Se intenta aplicar los patchs de la serie, se almacenan registran positivos,
+    se general logs.
+
+ - 05diagnostica_fallas.sh
+    Busca posibles causas de fallo y selecciona filtra/material para un nuevo ciclo 01crea_ etc.
+    
+    
