@@ -1,4 +1,4 @@
-# GCP – Git · Commit · Patch
+# GCP – Git · Commit · Patching
 
 **GCP** is a Bash tool that helps you apply **"alien" patches** to a local Linux kernel using Git.
 
@@ -25,21 +25,44 @@ GCP analyzes why Pandora fails, searches for related commits in the source, and 
 
 ---
 
-## How It Works
+### How It Works
 ```
-Pandora patch (fails)
-        ↓
-   Analyze errors
-        ↓
-Search source for related commits
-        ↓
-Extract S1 (Series 1: candidate patches)
-        ↓
-Apply S1 to destination
-        ↓
-    Does Pandora work?
-    ├─ YES → Success! Done.
-    └─ NO  → Repeat with S2, S3...
+┌─────────────────────┐
+│  Pandora.patch      │
+│   (fails)           │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Analyze errors     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Search source repo │
+│  for related commits│
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Generate S1        │
+│  (candidate patches)│
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Apply S1           │
+│  to destination     │
+└──────────┬──────────┘
+           │
+      ┌────┴────┐
+      │         │
+   Works?    Still fails?
+      │         │
+      ▼         ▼
+   SUCCESS    Generate S2
+              and repeat
+              
 ```
 
 ---
