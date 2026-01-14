@@ -28,28 +28,28 @@ GCP analyzes why Pandora fails, searches for related commits in the source, and 
 ### How It Works
 ```
 ┌─────────────────────┐
-│  Pandora.patch      │
-│   (fails)           │
+│  Pandora.patch          │
+│   (fails)               │
 └──────────┬──────────┘
-           │
-           ▼
+             │
+             ▼
 ┌─────────────────────┐
-│  Analyze errors     │
+│  Analyze errors         │
 └──────────┬──────────┘
-           │
-           ▼
+             │
+             ▼
 ┌─────────────────────┐
-│  Search source repo │
-│  for related commits│
+│  Search source repo     │
+│  for related commits.   │
 └──────────┬──────────┘
-           │
-           ▼
+             │
+             ▼
 ┌─────────────────────┐
-│  Generate S1        │
-│  (candidate patches)│
+│  Generate S1            │
+│  (candidate patches)    │
 └──────────┬──────────┘
-           │
-           ▼
+             │
+             ▼
 ┌─────────────────────┐
 │  Apply S1           │
 │  to destination     │
