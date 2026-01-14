@@ -51,15 +51,15 @@ GCP analyzes why Pandora fails, searches for related commits in the source, and 
              │
              ▼
 ┌─────────────────────┐
-│  Apply S1           │
-│  to destination     │
+│  Apply S1               │
+│  to destination         │
 └──────────┬──────────┘
-           │
-      ┌────┴────┐
-      │         │
-   Works?    Still fails?
-      │         │
-      ▼         ▼
+             │
+       ┌────┴────┐
+       │           │
+    Works?    Still fails?
+       │           │ 
+       ▼           ▼
    SUCCESS    Generate S2
               and repeat
               
