@@ -14,7 +14,7 @@ show_config
 create_directories
 
 echo ""
-echo "Directorio base: $PATCHES_BASE"
+echo "Base Directory: $GCP_HOME"
 echo ""
 
 # INICIALIZAR SISTEMA DE ESTADO
@@ -129,5 +129,5 @@ done
 
 echo ""
 echo "Inicialización completa."
-echo "Estructura lista en: $PATCHES_BASE"
+echo "Structure ready in: $GCP_HOME"
 echo "Estado: $total_registered hashes registrados, próxima serie: S$next_series"
